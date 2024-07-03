@@ -24,6 +24,7 @@ def train_classifier(data_dir):
     clf = cv2.face.LBPHFaceRecognizer_create()
     clf.train(faces, ids)
     clf.write("classifier.xml")
+    print("Trained Data.")
 
 
 train_classifier("data")
