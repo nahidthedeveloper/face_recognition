@@ -39,7 +39,10 @@ def generate_dataset():
                 cv2.putText(face, str(img_id), (50, 50), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 2)
                 cv2.imshow("Cropped face", face)
 
-        if cv2.waitKey(1) == 13 or img_id == 200:
+                if img_id >= 200:
+                    break
+
+        if cv2.waitKey(1) == 13 or img_id >= 200:
             break
 
     cap.release()
