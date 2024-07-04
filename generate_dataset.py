@@ -1,5 +1,8 @@
 import cv2
 import os
+from screeninfo import get_monitors
+import win32gui
+import win32con
 
 
 def generate_dataset():
@@ -24,6 +27,28 @@ def generate_dataset():
 
     cap = cv2.VideoCapture(0)  # Use 0 for default webcam
     img_id = 0
+
+    # Get screen resolution
+    monitor = get_monitors()[0]
+    screen_width = monitor.width
+    screen_height = monitor.height
+
+    # Define the window size
+    window_width = 200
+    window_height = 200
+
+    # Calculate the window position
+    window_x = int((screen_width - window_width) / 2)
+    window_y = int(screen_height * 0.1)  # Top 10% of the screen height
+
+    cv2.namedWindow("Cropped face", cv2.WINDOW_NORMAL)
+    cv2.resizeWindow("Cropped face", window_width, window_height)
+    cv2.moveWindow("Cropped face", window_x, window_y)
+
+    # Get the window handle
+    hwnd = win32gui.FindWindow(None, "Cropped face")
+    # Set the window as always on top
+    win32gui.SetWindowPos(hwnd, win32con.HWND_TOPMOST, window_x, window_y, window_width, window_height, 0)
 
     while True:
         ret, frame = cap.read()

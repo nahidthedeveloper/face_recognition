@@ -1,25 +1,25 @@
 import cv2
 
 
-def draw_boundary(img, classifier, scaleFactor, minNeighbors, color, text, clf):
-    gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    features = classifier.detectMultiScale(gray_img, scaleFactor, minNeighbors)
+def draw_boundary(image, classifier, scale_factor, min_neighbors, color, text, cl_fier):
+    gray_img = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    features = classifier.detectMultiScale(gray_img, scale_factor, min_neighbors)
 
     for (x, y, w, h) in features:
-        cv2.rectangle(img, (x, y), (x + w, y + h), color, 2)
+        cv2.rectangle(image, (x, y), (x + w, y + h), color, 2)
 
         # Perform prediction and compute confidence
-        id, pred = clf.predict(gray_img[y:y + h, x:x + w])
+        user_id, pred = cl_fier.predict(gray_img[y:y + h, x:x + w])
         confidence = int(100 * (1 - pred / 300))  # Calculate confidence level
 
         # Display ID or 'UNKNOWN' based on confidence
         if confidence > 70:
-            cv2.putText(img, f"ID: {id} - {confidence}%", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1,
+            cv2.putText(image, f"ID: {user_id} - {confidence}%", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 1,
                         cv2.LINE_AA)
         else:
-            cv2.putText(img, "UNKNOWN", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
+            cv2.putText(image, "UNKNOWN", (x, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
 
-    return img
+    return image
 
 
 # loading classifier
